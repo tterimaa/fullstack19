@@ -1,0 +1,18 @@
+selain->palvelin HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note
+palvelin->selain 302 Found // kehottaa selainta tekemään uuden HTTP GET pyynnön vastauksen header osan Locationin kertomaan paikkaan.
+selain->palvelin HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+palvelin->selain HTML koodi
+selain->palvelin HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain main.css
+selain->palvelin HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+palvelin->selain main.js
+
+note over selain:
+selain alkaa suorittaa js-koodia ja pyytää palvelimelta datan
+
+selain->palvelin HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain data.json
+
+note over selain:
+selain renderöi muistiinpanot näytölle
+
