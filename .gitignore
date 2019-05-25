@@ -1,5 +1,2 @@
-osa1/kurssitiedot/node_modules
-osa1/kurssitiedot/package-lock.json
-osa1/kurssitiedot/package.json
-osa1/kurssitiedot/public
+**/node_modules
 osa1/kurssitiedot/README.md
