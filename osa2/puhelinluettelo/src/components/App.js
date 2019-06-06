@@ -3,12 +3,14 @@ import Numbers from './Numbers'
 import PersonForm from './PersonForm'
 import personsService from '../services/persons'
 import Notification from './notification'
+import Filter from './filter'
 import './index.css'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ filter, setFilter ] = useState('')
   const [ message, setMessage ] = useState({
     text: "some text",
     type: "some type"
@@ -29,6 +31,10 @@ const App = () => {
 
   const handleNumberChange = (event) => {
       setNewNumber(event.target.value)
+  }
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value)
   }
 
   const handleDeletePerson = (i,name) => {
@@ -95,9 +101,10 @@ const App = () => {
     <div>
       <h2>Puhelinluettelo</h2>
       <Notification text={message.text} type={message.type} />
+      <Filter changeHandler={handleFilterChange} />
       <PersonForm submit={addPerson} nameValue={newName} nameHandler={handleNameChange} numberValue={newNumber} numberHandler={handleNumberChange} />   
       <h2>Numerot</h2>
-      <Numbers persons={persons} deletePerson={handleDeletePerson} />
+      <Numbers persons={persons} deletePerson={handleDeletePerson} filter={filter} />
     </div>
   )
 

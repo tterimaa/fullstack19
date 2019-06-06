@@ -1,8 +1,14 @@
 import React from 'react'
 
-const Numbers = ({persons, deletePerson}) => {
-    console.log(persons)
-    return persons.map((p, index) => 
+const Numbers = ({persons, deletePerson, filter}) => {
+    const filteredPersons = persons.reduce((result, person) => {
+        if(new RegExp('^.*' + filter + '.*$', 'i').test(person.name)) {
+            result.push(person)
+        }
+        return result
+    }, [])
+   
+    return filteredPersons.map((p, index) => 
         <div key={index}>
             {p.name} 
             {p.number}
