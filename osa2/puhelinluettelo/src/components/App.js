@@ -2,11 +2,17 @@ import React, { useState, useEffect } from 'react'
 import Numbers from './Numbers'
 import PersonForm from './PersonForm'
 import personsService from '../services/persons'
+import Notification from './notification'
+import './index.css'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ message, setMessage ] = useState({
+    text: "some text",
+    type: "some type"
+  })
 
   useEffect(() => {
     personsService
@@ -29,7 +35,7 @@ const App = () => {
     if(!window.confirm(`do you want to delete ${name}`)) return;
     personsService.deletePerson(i)
     setPersons(persons.filter(person => person.id !== i))
-    console.log(persons)
+    showMessage(`${name} was succesfully removed`, "success")
   }
 
   const addPerson = (event) => {
@@ -43,6 +49,11 @@ const App = () => {
           .changePerson(changedPerson, person.id)
           .then(response => {
             setPersons(persons.map(p => p.id !== person.id ? p : response.data))
+            showMessage(`Number of ${changedPerson.name}   was succesfully changed`, "success")
+          })
+          .catch(error => {
+            showMessage(`Information of ${newName} has been already removed from the server`, "error")
+            console.log(error)
           })
         }
     } else {
@@ -55,15 +66,35 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          showMessage(`${returnedPerson.name} was added succesfully`, "success")
         })
       }
       setNewName('')
       setNewNumber('')
     }
 
+    const showMessage = (messageText, type) => {
+      console.log(messageText, type)
+      const timeOutTime = 5000;
+
+      const newMessage = {
+        text: messageText,
+        type: type
+      }
+      const emptyMessage = {
+        text: "",
+        type: ""
+      }
+      setMessage(newMessage)
+      setTimeout(() => {
+        setMessage(emptyMessage)
+      }, timeOutTime)
+    }
+
   return (
     <div>
       <h2>Puhelinluettelo</h2>
+      <Notification text={message.text} type={message.type} />
       <PersonForm submit={addPerson} nameValue={newName} nameHandler={handleNameChange} numberValue={newNumber} numberHandler={handleNumberChange} />   
       <h2>Numerot</h2>
       <Numbers persons={persons} deletePerson={handleDeletePerson} />
